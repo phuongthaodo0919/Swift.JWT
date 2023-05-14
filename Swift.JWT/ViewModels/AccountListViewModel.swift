@@ -9,6 +9,7 @@ import Foundation
 
 class AccountListViewModel: ObservableObject {
     @Published var accounts: [AccountViewModel] = []
+    @Published var isSignOut: Bool = false
     
     func getAccounts() {
         
@@ -28,5 +29,11 @@ class AccountListViewModel: ObservableObject {
                 print(err.localizedDescription)
             }
         }
+    }
+    
+    func signout(){
+        let defaults = UserDefaults()
+         defaults.set("", forKey: "jsonwebtoken")
+        isSignOut = true
     }
 }

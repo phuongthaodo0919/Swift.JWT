@@ -11,28 +11,35 @@ struct LoginView: View {
     @ObservedObject var loginVM = LoginViewModel()
     
     var body: some View {
-        VStack {
-            Form {
-                HStack {
-                    Spacer()
-                    Image(systemName: loginVM.isAuthenticated ? "lock.fill" : "lock.open")
-                }
-                TextField("Username", text: $loginVM.usename)
-                SecureField("Password", text: $loginVM.password)
-                HStack {
-                    Spacer()
-                    Button("Login") {
-                        loginVM.login()
-                    }.frame(width: 150, height: 50)
-                        .background(Color(uiColor: UIColor(red: 0.33, green: 0.90, blue: 0.76, alpha: 1.00)))
-                        .cornerRadius(10)
-                    Spacer()
-                }
-            }.buttonStyle(PlainButtonStyle())
+        NavigationView {
+            VStack {
+                Form {
+                    HStack {
+                        Spacer()
+                        Image(systemName: loginVM.isAuthenticated ? "lock.fill" : "lock.open")
+                    }
+                    TextField("Username", text: $loginVM.usename)
+                    SecureField("Password", text: $loginVM.password)
+                    HStack {
+                        Spacer()
+                        Button("Login") {
+                            loginVM.login()
+                        }.frame(width: 150, height: 50)
+                            .background(Color(uiColor: UIColor(red: 0.33, green: 0.90, blue: 0.76, alpha: 1.00)))
+                            .cornerRadius(10)
+                        Spacer()
+                    }
+                }.buttonStyle(PlainButtonStyle())
+                    .toolbar {
+                        ToolbarItem {
+                            NavigationLink(destination: AccountListView(), isActive: $loginVM.isAuthenticated, label: {
+                                EmptyView()
+                            })
+                        }
+                    }
+            }
         }
-        .sheet(isPresented: $loginVM.isAuthenticated) {
-            AccountListView()
-        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

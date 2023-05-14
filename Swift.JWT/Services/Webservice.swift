@@ -16,7 +16,7 @@ class WebService {
             return
         }
         var request = URLRequest(url: url)
-        request.addValue("token", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { data, res, err in
             guard let data, err == nil else {
@@ -29,7 +29,7 @@ class WebService {
                 return
             }
             completion(.success(decoredData));
-        }
+        }.resume()
     }
     
     func login(username: String, password: String, completion: @escaping (Result<String, AuthenticationError>) -> Void) {

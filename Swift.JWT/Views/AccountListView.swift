@@ -10,6 +10,7 @@ import SwiftUI
 struct AccountListView: View {
     @ObservedObject var accountListVM = AccountListViewModel()
     
+    
     var body: some View {
         NavigationView
         {
@@ -25,13 +26,24 @@ struct AccountListView: View {
                 
             }
             .toolbar {
-                Button("Signout") {
+                ToolbarItem {
+                    Button("Signout") {
+                        accountListVM.signout()
+                        
+                    }
                     
                 }
+                ToolbarItem {
+                    NavigationLink(destination: LoginView(), isActive: $accountListVM.isSignOut) {
+                        EmptyView()
+                    }
+                }
+                
             }
             .navigationTitle(Text("Account list"))
         }
-        .onAppear {
+        .navigationBarBackButtonHidden()
+        .onAppear() {
             accountListVM.getAccounts()
         }
     }
